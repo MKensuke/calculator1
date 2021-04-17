@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         // 数値FIZZBUZZを表示するテキスト
         TextView textView = findViewById(R.id.textView1);
         //　入力値
-        EditText editText = findViewById(R.id.editText1);
-        SpannableStringBuilder sb = (SpannableStringBuilder) editText.getText();
-        String string1 = sb.toString();
-        iInputnum = Integer.parseInt(string1);
+//        EditText editText = findViewById(R.id.editText1);
+//        SpannableStringBuilder sb = (SpannableStringBuilder) editText.getText();
+//        String string1 = sb.toString();
+//        iInputnum = Integer.parseInt(string1);
         //　FIZZ値
         EditText editTextFIZZ = findViewById(R.id.editTextFIZZ);
         SpannableStringBuilder sbfizz = (SpannableStringBuilder) editTextFIZZ.getText();
@@ -54,14 +54,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         String stringbuzz = sbbuzz.toString();
         iInputBUZZ = Integer.parseInt(stringbuzz);
 
-        //フラグ設定
-        if (0 == (iInputFIZZ % iInputnum)) {
-            iFizzFlag = 1;
-        }
+//        //フラグ設定
+//        if (0 == (iInputFIZZ % iInputnum)) {
+//            iFizzFlag = 1;
+//        }
 
-        if (0 == (iInputBUZZ % iInputnum)) {
-            iBuzzFlag = 1;
-        }
+//        if (0 == (iInputBUZZ % iInputnum)) {
+//            iBuzzFlag = 1;
+//        }
 
         // iFizzFlagが立っている場合、FIZZを設定
         if (1 == iFizzFlag) {
@@ -74,9 +74,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         }
 
         // フラグ立ってない場合、出力値に入力した値を設定
-        if ((0 == iFizzFlag) && (0 == iBuzzFlag)) {
-            strOUTFIZZBUZZ = String.valueOf(iInputnum);
-        }
+//        if ((0 == iFizzFlag) && (0 == iBuzzFlag)) {
+//            strOUTFIZZBUZZ = String.valueOf(iInputnum);
+//        }
         // strOUTFIZZBUZZをテキストを設定して表示
         textView.setText(strOUTFIZZBUZZ);
 
