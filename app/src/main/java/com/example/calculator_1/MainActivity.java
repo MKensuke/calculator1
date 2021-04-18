@@ -1,5 +1,6 @@
 package com.example.calculator_1;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.view.View;
@@ -10,78 +11,81 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import static com.example.calculator_1.Operator.add;
+import static com.example.calculator_1.Operator.divide;
+import static com.example.calculator_1.Operator.multiply;
+import static com.example.calculator_1.Operator.subtract;
+
 public class MainActivity extends AppCompatActivity implements OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // ボタン
-        Button button = findViewById(R.id.button1);
+        //演算子指定ボタン
+        Button operator_1 = (Button) findViewById(R.id.operator_1);
+        Button operator_2 = (Button) findViewById(R.id.operator_2);
+        Button operator_3 = (Button) findViewById(R.id.operator_3);
+        Button operator_4 = (Button) findViewById(R.id.operator_4);
 
-        button.setOnClickListener(this);
+        operator_1.setOnClickListener(this);
+        operator_2.setOnClickListener(this);
+        operator_3.setOnClickListener(this);
+        operator_4.setOnClickListener(this);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        //出力値
-        String strOUTFIZZBUZZ = "";
-        //入力値
-        int iInputnum;
-        //入力値FIZZ値
-        int iInputFIZZ;
-        //入力値BUZZ値
-        int iInputBUZZ;
+        //入力値チェック(UI側で検知したい。余裕あればvalidateクラスに切り出す)
+        //引数二つあるかチェック
+        //計算記号の未選択チェック(今回は2つ以上の洗濯もUI的には可能なので仕方なくここで確認する)
+        //0除算チェック
 
-        int iFizzFlag = 0;
-        int iBuzzFlag = 0;
+        //クラス変数宣言
+        int inputNum1;                  //入力値(画面項目の「引数1」の値)
+        int inputNum2;                  //入力値(画面項目の「引数2」の値)
+        Operator operator = null;                //入力値(画面項目の「計算記号」部分の値)
 
-        // 数値FIZZBUZZを表示するテキスト
-        TextView textView = findViewById(R.id.textView1);
         //　入力値
-//        EditText editText = findViewById(R.id.editText1);
-//        SpannableStringBuilder sb = (SpannableStringBuilder) editText.getText();
-//        String string1 = sb.toString();
-//        iInputnum = Integer.parseInt(string1);
-        //　FIZZ値
-        EditText editTextFIZZ = findViewById(R.id.editTextFIZZ);
-        SpannableStringBuilder sbfizz = (SpannableStringBuilder) editTextFIZZ.getText();
-        String stringfizz = sbfizz.toString();
-        iInputFIZZ = Integer.parseInt(stringfizz);
-        //　BUZZ値
-        EditText editTextBUZZ = findViewById(R.id.editTextBUZZ);
-        SpannableStringBuilder sbbuzz = (SpannableStringBuilder) editTextBUZZ.getText();
-        String stringbuzz = sbbuzz.toString();
-        iInputBUZZ = Integer.parseInt(stringbuzz);
+        //　引数1
+        EditText editTextFIZZ = findViewById(R.id.inputNum1);
+        SpannableStringBuilder sbInputNum1 = (SpannableStringBuilder) editTextFIZZ.getText();
+        inputNum1 = Integer.parseInt(sbInputNum1.toString());
 
-//        //フラグ設定
-//        if (0 == (iInputFIZZ % iInputnum)) {
-//            iFizzFlag = 1;
-//        }
+        //　引数2
+        EditText editTextBUZZ = findViewById(R.id.inputNum2);
+        SpannableStringBuilder sbInputNum2 = (SpannableStringBuilder) editTextBUZZ.getText();
+        inputNum2 = Integer.parseInt(sbInputNum2.toString());
 
-//        if (0 == (iInputBUZZ % iInputnum)) {
-//            iBuzzFlag = 1;
-//        }
+        //出力値
+        // 計算結果を表示するテキスト
+        TextView calculateResult = findViewById(R.id.calculateResult);
 
-        // iFizzFlagが立っている場合、FIZZを設定
-        if (1 == iFizzFlag) {
-            strOUTFIZZBUZZ = strOUTFIZZBUZZ + "FIZZ";
+        //演算子のフラグ
+        switch (v.getId()) {
+            case R.id.operator_1:
+                operator = add;
+                break;
+            case R.id.operator_2:
+                operator = subtract;
+                break;
+            case R.id.operator_3:
+                operator = multiply;
+                break;
+            case R.id.operator_4:
+                if (inputNum2 != 0) {
+                    operator = divide;
+                } else {
+                    System.out.println("0除算です");
+//                    calculateResult.setText(Message.MSG003);//ここで処理をおわらせたい、また後で
+                }
+                break;
         }
 
-        // iBuzzFlagが立っている場合、BUZZを設定
-        if (1 == iBuzzFlag) {
-            strOUTFIZZBUZZ = strOUTFIZZBUZZ + "BUZZ";
-        }
+        Calculation calc = new Calculation(inputNum1, inputNum2, operator);
 
-        // フラグ立ってない場合、出力値に入力した値を設定
-//        if ((0 == iFizzFlag) && (0 == iBuzzFlag)) {
-//            strOUTFIZZBUZZ = String.valueOf(iInputnum);
-//        }
-        // strOUTFIZZBUZZをテキストを設定して表示
-        textView.setText(strOUTFIZZBUZZ);
-
-//        FIZZBUZZ fizzbuzz = new FIZZBUZZ(iInputFIZZ, iInputBUZZ);
-//
-//        strOUTFIZZBUZZ = fizzbuzz.FIZZBUZZStrChk(iInputnum);
+        //テキストを設定して表示
+        calculateResult.setText(calc.calculate());
     }
 }
