@@ -37,30 +37,32 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        //入力値チェック(UI側で検知したい。余裕あればvalidateクラスに切り出す)
-        //引数二つあるかチェック
-        //計算記号の未選択チェック(今回は2つ以上の洗濯もUI的には可能なので仕方なくここで確認する)
-        //0除算チェック
-
         //クラス変数宣言
-        int inputNum1;                  //入力値(画面項目の「引数1」の値)
-        int inputNum2;                  //入力値(画面項目の「引数2」の値)
+        int inputNum1;                           //入力値(画面項目の「引数1」の値)
+        int inputNum2;                           //入力値(画面項目の「引数2」の値)
         Operator operator = null;                //入力値(画面項目の「計算記号」部分の値)
+
+        //  出力値
+        //  計算結果を表示するテキスト
+        TextView calculateResult = findViewById(R.id.calculateResult);
 
         //　入力値
         //　引数1
-        EditText editTextFIZZ = findViewById(R.id.inputNum1);
-        SpannableStringBuilder sbInputNum1 = (SpannableStringBuilder) editTextFIZZ.getText();
-        inputNum1 = Integer.parseInt(sbInputNum1.toString());
+        EditText editText1 = findViewById(R.id.inputNum1);
+        SpannableStringBuilder sbInputNum1 = (SpannableStringBuilder) editText1.getText();
 
         //　引数2
-        EditText editTextBUZZ = findViewById(R.id.inputNum2);
-        SpannableStringBuilder sbInputNum2 = (SpannableStringBuilder) editTextBUZZ.getText();
-        inputNum2 = Integer.parseInt(sbInputNum2.toString());
+        EditText editText2 = findViewById(R.id.inputNum2);
+        SpannableStringBuilder sbInputNum2 = (SpannableStringBuilder) editText2.getText();
 
-        //出力値
-        // 計算結果を表示するテキスト
-        TextView calculateResult = findViewById(R.id.calculateResult);
+        //入力値チェック(UI側で検知したい、余裕あればvalidatorクラスに切り出す)
+        //引数二つあるかチェック
+        if (sbInputNum2.length() == 0 || sbInputNum1.length() == 0) {
+            calculateResult.setText(Message.MSG001.toString());
+            return;
+        }
+        inputNum1 = Integer.parseInt(sbInputNum1.toString());
+        inputNum2 = Integer.parseInt(sbInputNum2.toString());
 
         //演算子のフラグ
         switch (v.getId()) {
@@ -77,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 if (inputNum2 != 0) {
                     operator = divide;
                 } else {
-                    System.out.println("0除算です");
-//                    calculateResult.setText(Message.MSG003);//ここで処理をおわらせたい、また後で
+                    calculateResult.setText(Message.MSG002.toString());
+                    return;
                 }
                 break;
         }

@@ -11,13 +11,7 @@ public enum Message {
     MSG002 {
         @Override
         public String toString() {
-            return "計算記号を選択してください";
-        }
-    },
-    MSG003 {
-        @Override
-        public String toString() {
-            return "0除算はできません";
+            return "0除算です";
         }
     },
 }
